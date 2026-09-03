@@ -52,6 +52,13 @@ declare module 'vue-router/auto-routes' {
       { path: ParamValue<false> },
       | never
     >,
+    '/funcionario': RouteRecordInfo<
+      '/funcionario',
+      '/funcionario',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/login': RouteRecordInfo<
       '/login',
       '/login',
@@ -110,6 +117,14 @@ declare module 'vue-router/auto-routes' {
         | never
       pathParamNames:
         | 'path'
+    }
+    'src/pages/funcionario.vue': {
+      routes:
+        | '/funcionario'
+      views:
+        | never
+      pathParamNames:
+        | never
     }
     'src/pages/login.vue': {
       routes:

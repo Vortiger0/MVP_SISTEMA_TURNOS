@@ -17,7 +17,7 @@ meta:
       />
 
       <q-card class="shadow-3 q-pa-md text-center">
-        <!-- CABECERA DE LA SEDE -->
+        <!--CABECERA DE LA SEDE -->
         <q-card-section>
           <div class="text-caption text-grey-7">Solicitud de turno para:</div>
           <div class="text-h6 text-primary text-weight-bold">
@@ -30,6 +30,7 @@ meta:
         <!-- ESTADO A: SI AÚN NO HA CONFIRMADO -->
         <q-card-section v-if="!turnoOtorgado" class="q-py-lg">
           <q-icon name="warning" color="warning" size="4rem" />
+          <div class="text-h6 text-weight-bold q-mt-sm">(mensaje de advertencia)</div>
           <p class="text-body2 text-grey-8 q-mt-md">
             ¿Seguro que quiere sacar un número para colocarse en la fila?
           </p>
