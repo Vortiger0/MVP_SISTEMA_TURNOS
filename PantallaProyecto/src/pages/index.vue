@@ -4,256 +4,166 @@ meta:
 </route>
 
 <template>
-  <q-page class="flex flex-center bg-blue-2 q-pa-md relative-position">
-    <!-- BOTÓN DE CAMBIO DE ROL / MODO EN LA PARTE SUPERIOR DERECHA -->
-    <div class="absolute-top-right q-pa-md" style="z-index: 10;">
-      <q-btn
-        v-if="pantalla !== 'atencion'"
-        outline
-        color="primary"
-        icon="admin_panel_settings"
-        label="Modo Funcionario"
-        size="sm"
-        @click="irA('atencion')"
-      />
-      <q-btn
-        v-else
-        outline
-        color="secondary"
-        icon="person"
-        label="Modo Ciudadano"
-        size="sm"
-        @click="irA('solicitar')"
-      />
+  <q-page class="bg-grey-2 q-pa-md">
+    <div class="max-width-container margin-auto q-pt-lg">
+      
+      <!-- 1. CATÁLOGO PRINCIPAL DE SEDES DE COBRANZA -->
+      <div v-if="pantalla === 'catalogo'">
+        <div class="row items-center justify-between q-mb-lg">
+          <q-btn
+            color="primary"
+            icon="confirmation_number"
+            label="Mis turnos"
+            unelevated
+            @click="dialogoMisTurnos = true"
+          />
+          <q-btn flat round dense color="grey-7" icon="logout" @click="cerrarSesion">
+            <q-tooltip>Cerrar sesión</q-tooltip>
+          </q-btn>
+        </div>
+
+        <div class="row q-col-gutter-md">
+          <div
+            v-for="sede in sedes"
+            :key="sede.id"
+            class="col-12 col-sm-6 col-md-4"
+          >
+            <q-card
+              class="cursor-pointer card-hover shadow-2"
+              @click="seleccionarSede(sede)"
+            >
+              <q-card-section class="text-center q-py-lg">
+                <div class="text-subtitle1 text-weight-bold q-mb-sm">
+                  ({{ sede.nombre }})
+                </div>
+                <q-chip
+                  :color="colorEstado(sede.estado)"
+                  text-color="white"
+                  size="sm"
+                >
+                  ● {{ sede.estado }}
+                </q-chip>
+              </q-card-section>
+            </q-card>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. VISTA DETALLADA DE LA SEDE SELECCIONADA -->
+      <div v-if="pantalla === 'detalle'" class="max-width-detalle margin-auto">
+        <q-btn
+          flat
+          icon="arrow_back"
+          label="Volver a sedes"
+          color="primary"
+          class="q-mb-md"
+          @click="pantalla = 'catalogo'"
+        />
+
+        <q-card class="shadow-3 q-pa-sm">
+          <q-card-section class="text-center">
+            <div class="text-h6 text-weight-bold text-uppercase">
+              "Vista Detallada"
+            </div>
+          </q-card-section>
+
+          <q-card-section class="row q-col-gutter-md items-center">
+            <!-- MAPA -->
+            <div class="col-12 col-md-6">
+              <q-card flat bordered class="bg-grey-4 flex flex-center" style="height: 180px;">
+                <div class="text-h5 text-weight-bolder text-grey-6">MAPA</div>
+              </q-card>
+            </div>
+
+            <!-- DATOS DE LA SEDE -->
+            <div class="col-12 col-md-6">
+              <q-card flat bordered class="q-pa-md bg-grey-1">
+                <div class="text-subtitle1 text-weight-bold text-center q-mb-sm">
+                  {{ sedeSeleccionada?.nombre }}
+                </div>
+                <q-separator class="q-mb-sm" />
+                <div class="text-caption text-grey-9 q-gutter-y-xs">
+                  <div><strong>Dirección:</strong> {{ sedeSeleccionada?.direccion }}</div>
+                  <div><strong>Horarios:</strong> {{ sedeSeleccionada?.horarios }}</div>
+                  <div><strong>Teléfono:</strong> {{ sedeSeleccionada?.telefono }}</div>
+                  <div><strong>Redes:</strong> {{ sedeSeleccionada?.redes }}</div>
+                </div>
+              </q-card>
+            </div>
+          </q-card-section>
+
+          <!-- BOTÓN QUE LLEVA A LA OTRA PÁGINA -->
+          <q-card-actions align="center" class="q-pb-md">
+            <q-btn
+              label="Sacar número"
+              color="primary"
+              size="lg"
+              unelevated
+              class="q-px-xl"
+              :to="{ path: '/sacar-turno', query: { sede: sedeSeleccionada?.nombre } }"
+            />
+          </q-card-actions>
+        </q-card>
+      </div>
+
     </div>
 
-    <!-- 1. PANTALLA DE REGISTRO -->
-    <q-card v-if="pantalla === 'registro'" style="width: 100%; max-width: 400px" class="q-pa-sm shadow-3">
-      <q-card-section class="text-center">
-        <div class="text-h6 text-primary">Registro</div>
-      </q-card-section>
-
-      <q-card-section class="q-gutter-y-sm">
-        <q-input v-model="formRegistro.nombre" label="Nombre y apellido" outlined dense />
-        <q-input v-model="formRegistro.correo" label="Correo" type="email" outlined dense />
-        <q-input v-model="formRegistro.password" label="Ingresar contraseña" type="password" outlined dense />
-        <q-input v-model="formRegistro.repeatPassword" label="Repetir contraseña" type="password" outlined dense />
-        
-        <q-btn 
-          label="Crear cuenta" 
-          color="primary" 
-          class="full-width q-mt-md" 
-          unelevated 
-          @click="irA('login')" 
-        />
-      </q-card-section>
-
-      <q-card-actions align="center">
-        <q-btn 
-          flat 
-          no-caps 
-          label="¿Ya tienes una cuenta? Accede aquí" 
-          color="secondary" 
-          @click="irA('login')" 
-        />
-      </q-card-actions>
-    </q-card>
-
-    <!-- 2. PANTALLA DE LOGIN -->
-    <q-card v-if="pantalla === 'login'" style="width: 100%; max-width: 400px" class="q-pa-sm shadow-3">
-      <q-card-section class="text-center">
-        <div class="text-h6 text-primary">Login</div>
-      </q-card-section>
-
-      <q-card-section class="q-gutter-y-sm">
-        <q-input 
-          v-model="formLogin.identificador" 
-          label="Usuario o correo" 
-          hint="Ciudadanos: correo | Funcionarios: usuario"
-          outlined 
-          dense 
-        />
-        <q-input v-model="formLogin.password" label="Contraseña" type="password" outlined dense />
-        
-        <q-btn 
-          label="Ingresar" 
-          color="primary" 
-          class="full-width q-mt-md" 
-          unelevated 
-          @click="iniciarSesion" 
-        />
-      </q-card-section>
-
-      <q-card-actions align="center">
-        <q-btn 
-          flat 
-          no-caps 
-          label="¿No tienes cuenta? Regístrate aquí" 
-          color="secondary" 
-          @click="irA('registro')" 
-        />
-      </q-card-actions>
-    </q-card>
-
-    <!-- 3. PANTALLA CIUDADANO: SACAR TURNO -->
-    <q-card v-if="pantalla === 'solicitar'" style="width: 100%; max-width: 420px" class="q-pa-sm shadow-3">
-      <q-card-section class="row items-center justify-between q-pb-none">
-        <div class="text-subtitle2 text-weight-bold text-grey-8">
-          Hola, {{ usuarioActual }}
-        </div>
-        <!-- ÍCONO MINIMALISTA DE CERRAR SESIÓN -->
-        <q-btn 
-          flat 
-          round 
-          dense 
-          color="grey-7" 
-          icon="logout" 
-          size="sm" 
-          @click="cerrarSesion"
-        >
-          <q-tooltip>Cerrar sesión</q-tooltip>
-        </q-btn>
-      </q-card-section>
-
-      <q-separator class="q-my-md" />
-
-      <q-card-section class="text-center q-py-md">
-        <!-- Estado A: Si aún no ha sacado turno -->
-        <div v-if="!miTurno">
-          <div class="text-body1 text-grey-8 q-mb-lg">
-            Presiona el botón para obtener tu número de atención.
+    <!-- DIÁLOGO EMERGENTE: MIS TURNOS -->
+    <q-dialog v-model="dialogoMisTurnos">
+      <q-card style="min-width: 300px">
+        <q-card-section class="row items-center justify-between">
+          <div class="text-h6">Mis Turnos</div>
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-separator />
+        <q-card-section class="text-center q-py-lg">
+          <div class="text-grey-7">
+            No tienes turnos activos en este momento.
           </div>
-          <q-btn 
-            label="Sacar Turno" 
-            color="primary" 
-            icon="confirmation_number" 
-            size="lg" 
-            unelevated 
-            class="q-px-xl q-py-sm"
-            @click="generarTurno" 
-          />
-        </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
 
-        <!-- Estado B: Cuando ya tiene un número asignado -->
-        <div v-else class="q-gutter-y-sm">
-          <div class="text-subtitle1 text-grey-8">Tu número de turno es:</div>
-          <div class="text-h1 text-weight-bolder text-secondary q-my-sm">
-            #{{ miTurno }}
-          </div>
-          <q-chip color="primary" text-color="white" icon="info">
-            Número actualmente en atención: {{ numeroActual }}
-          </q-chip>
-          <div class="q-mt-md">
-            <q-btn flat dense no-caps label="Sacar otro turno" color="primary" @click="miTurno = null" />
-          </div>
-        </div>
-      </q-card-section>
-    </q-card>
-
-    <!-- 4. PANTALLA FUNCIONARIO: ATENCIÓN DE TURNOS -->
-    <q-card v-if="pantalla === 'atencion'" style="width: 100%; max-width: 480px" class="q-pa-sm shadow-3">
-      <q-card-section class="row items-center justify-between q-pb-none">
-        <div class="text-subtitle2 text-weight-bolder text-grey-9">
-          ÚLTIMO NÚMERO SOLICITADO: 
-          <q-badge color="negative" class="text-bold q-ml-xs q-px-sm" style="font-size: 0.9em;">
-            {{ ultimoNumeroSolicitado }}
-          </q-badge>
-        </div>
-        <!-- ÍCONO MINIMALISTA DE CERRAR SESIÓN -->
-        <q-btn 
-          flat 
-          round 
-          dense 
-          color="grey-7" 
-          icon="logout" 
-          size="sm" 
-          @click="cerrarSesion"
-        >
-          <q-tooltip>Cerrar cuenta</q-tooltip>
-        </q-btn>
-      </q-card-section>
-
-      <q-card-section class="text-center q-pt-md">
-        <div class="text-caption text-grey-7">Nombre de funcionario</div>
-        <div class="text-subtitle1 text-weight-bold text-uppercase q-mb-md">
-          {{ usuarioActual }}
-        </div>
-
-        <q-separator class="q-my-md" />
-
-        <div class="text-subtitle2 text-grey-8 text-weight-bold q-mt-lg">
-          NÚMERO SIENDO ATENDIDO
-        </div>
-        <div class="text-h1 text-weight-bolder text-primary q-my-sm">
-          {{ numeroActual }}
-        </div>
-      </q-card-section>
-
-      <q-card-actions align="center" class="q-pb-md">
-        <q-btn 
-          label="Siguiente" 
-          color="primary" 
-          size="lg" 
-          unelevated
-          class="q-px-xl" 
-          :disabled="numeroActual >= ultimoNumeroSolicitado"
-          @click="siguienteNumero" 
-        />
-      </q-card-actions>
-    </q-card>
   </q-page>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 
-// Estado de navegación: 'registro', 'login', 'solicitar', 'atencion'
-const pantalla = ref('login')
+const pantalla = ref('catalogo')
+const dialogoMisTurnos = ref(false)
+const sedeSeleccionada = ref(null)
 
-// Modelos para formularios
-const formRegistro = reactive({
-  nombre: '',
-  correo: '',
-  password: '',
-  repeatPassword: ''
-})
+const sedes = ref([
+  { id: 1, nombre: 'Abitab', estado: 'Ocupado', direccion: 'Av. 18 de Julio 1234', horarios: '09:00 - 18:00', telefono: '2900 0000', redes: '@abitab_oficial' },
+  { id: 2, nombre: 'Abitab centro', estado: 'Muy ocupado', direccion: 'Plaza Independencia 567', horarios: '08:30 - 19:00', telefono: '2901 1111', redes: '@abitab_centro' },
+  { id: 3, nombre: 'Abitab por sede', estado: 'Ocupado', direccion: 'Montevideo Shopping Nivel 1', horarios: '10:00 - 21:00', telefono: '2902 2222', redes: '@abitab_shopping' },
+  { id: 4, nombre: 'Abitab Terminal', estado: 'Poco ocupado', direccion: 'Tres Cruces Nivel 2', horarios: '07:00 - 22:00', telefono: '2903 3333', redes: '@abitab_terminal' }
+])
 
-const formLogin = reactive({
-  identificador: '',
-  password: ''
-})
-
-// Estado global de turnos
-const usuarioActual = ref('Usuario Demo')
-const miTurno = ref(null)
-const numeroActual = ref(1)
-const ultimoNumeroSolicitado = ref(15)
-
-// Métodos
-const irA = (nuevaPantalla) => {
-  pantalla.value = nuevaPantalla
+const seleccionarSede = (sede) => {
+  sedeSeleccionada.value = sede
+  pantalla.value = 'detalle'
 }
 
-const iniciarSesion = () => {
-  if (formLogin.identificador.trim() !== '') {
-    usuarioActual.value = formLogin.identificador
+const colorEstado = (estado) => {
+  switch (estado) {
+    case 'Poco ocupado': return 'positive'
+    case 'Ocupado': return 'warning'
+    case 'Muy ocupado': return 'negative'
+    default: return 'grey'
   }
-  irA('solicitar')
 }
 
 const cerrarSesion = () => {
-  miTurno.value = null
-  irA('login')
-}
-
-const generarTurno = () => {
-  ultimoNumeroSolicitado.value++
-  miTurno.value = ultimoNumeroSolicitado.value
-}
-
-const siguienteNumero = () => {
-  if (numeroActual.value < ultimoNumeroSolicitado.value) {
-    numeroActual.value++
-  }
+  pantalla.value = 'catalogo'
 }
 </script>
+
+<style scoped>
+.max-width-container { max-width: 900px; }
+.max-width-detalle { max-width: 600px; }
+.margin-auto { margin-left: auto; margin-right: auto; }
+.card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.card-hover:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important; }
+</style>

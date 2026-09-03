@@ -52,6 +52,27 @@ declare module 'vue-router/auto-routes' {
       { path: ParamValue<false> },
       | never
     >,
+    '/login': RouteRecordInfo<
+      '/login',
+      '/login',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/registro': RouteRecordInfo<
+      '/registro',
+      '/registro',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/sacar-turno': RouteRecordInfo<
+      '/sacar-turno',
+      '/sacar-turno',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
   }
 
   /**
@@ -89,6 +110,30 @@ declare module 'vue-router/auto-routes' {
         | never
       pathParamNames:
         | 'path'
+    }
+    'src/pages/login.vue': {
+      routes:
+        | '/login'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/registro.vue': {
+      routes:
+        | '/registro'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/sacar-turno.vue': {
+      routes:
+        | '/sacar-turno'
+      views:
+        | never
+      pathParamNames:
+        | never
     }
   }
 
