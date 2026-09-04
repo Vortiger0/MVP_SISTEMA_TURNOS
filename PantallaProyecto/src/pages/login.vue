@@ -5,24 +5,47 @@ meta:
 
 <template>
   <q-page class="bg-grey-2 flex flex-center q-pa-md">
-    <q-card class="shadow-3 q-pa-md" style="width: 100%; max-width: 400px;">
-      <q-card-section class="text-center">
-        <q-icon name="account_circle" color="primary" size="4rem" />
+    <q-card class="shadow-3 q-pa-md" style="width: 100%; max-width: 420px;">
+      
+      <!-- SWITCH / TOGGLE DE MODO -->
+      <q-card-section class="row items-center justify-between q-pb-none">
+        <span class="text-caption text-weight-bold text-grey-7">
+          MODO DE ACCESO:
+        </span>
+        <q-toggle
+          v-model="esFuncionario"
+          :label="esFuncionario ? 'Funcionario' : 'Ciudadano'"
+          color="primary"
+          keep-color
+        />
+      </q-card-section>
+
+      <!-- CABECERA ADAPTATIVA -->
+      <q-card-section class="text-center q-pt-xs">
+        <q-icon
+          :name="esFuncionario ? 'admin_panel_settings' : 'account_circle'"
+          :color="esFuncionario ? 'secondary' : 'primary'"
+          size="4rem"
+        />
         <div class="text-h5 text-weight-bold text-grey-9 q-mt-sm">
-          Iniciar Sesión
+          {{ esFuncionario ? 'Acceso Funcionario' : 'Acceso Ciudadano' }}
         </div>
         <div class="text-caption text-grey-7">
-        Inicie su sesión
+          {{ esFuncionario ? 'Ingresa con tu usuario asignado' : 'Ingresa con tu correo registrado' }}
         </div>
       </q-card-section>
 
+      <!-- FORMULARIO GENERALIZADO -->
       <q-card-section class="q-gutter-y-md">
+        
+        <!-- CAMPO 1: CORREO (Ciudadano) / USUARIO (Funcionario) -->
         <q-input
-          v-model="email"
-          label="Correo Electrónico / Usuario"
+          v-if="!esFuncionario"
+          v-model="identificador"
+          label="Correo Electrónico"
+          type="email"
           outlined
           dense
-          type="email"
         >
           <template #prepend>
             <q-icon name="email" />
@@ -30,27 +53,42 @@ meta:
         </q-input>
 
         <q-input
-          v-model="password"
-          label="Contraseña"
+          v-else
+          v-model="identificador"
+          label="Usuario"
           outlined
           dense
+        >
+          <template #prepend>
+            <q-icon name="person" />
+          </template>
+        </q-input>
+
+        <!-- CAMPO 2: CONTRASEÑA (Ambos modos) -->
+        <q-input
+          v-model="password"
+          label="Contraseña"
           type="password"
+          outlined
+          dense
         >
           <template #prepend>
             <q-icon name="lock" />
           </template>
         </q-input>
 
+        <!-- BOTÓN DE INGRESO -->
         <q-btn
-          label="Ingresar"
-          color="primary"
+          :label="esFuncionario ? 'Ingresar como Funcionario' : 'Ingresar como Ciudadano'"
+          :color="esFuncionario ? 'secondary' : 'primary'"
           unelevated
           class="full-width q-py-sm"
-          to="/"
+          @click="iniciarSesion"
         />
       </q-card-section>
 
-      <q-card-section class="text-center q-pt-none">
+      <!-- ENLACE A REGISTRO (Solo visible en Modo Ciudadano) -->
+      <q-card-section v-if="!esFuncionario" class="text-center q-pt-none">
         <div class="text-body2 text-grey-8">
           ¿No tienes una cuenta?
           <q-btn
@@ -64,15 +102,38 @@ meta:
           />
         </div>
       </q-card-section>
+
     </q-card>
   </q-page>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
-const email = ref('')
+const router = useRouter()
+
+// Estado del Switch: false = Ciudadano, true = Funcionario
+const esFuncionario = ref(false)
+
+// Campos del formulario
+const identificador = ref('')
 const password = ref('')
-</script>
 
- 
+// Limpia el identificador al cambiar de modo para evitar confusiones de datos
+watch(esFuncionario, () => {
+  identificador.value = ''
+  password.value = ''
+})
+
+// Lógica para redirigir según el modo seleccionado
+const iniciarSesion = () => {
+  if (esFuncionario.value) {
+    // Redirige al panel de atención del funcionario
+    router.push('/funcionario')
+  } else {
+    // Redirige al catálogo principal del ciudadano
+    router.push('/')
+  }
+}
+</script>
