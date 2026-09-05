@@ -80,6 +80,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/totem': RouteRecordInfo<
+      '/totem',
+      '/totem',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
   }
 
   /**
@@ -145,6 +152,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/sacar-turno.vue': {
       routes:
         | '/sacar-turno'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/totem.vue': {
+      routes:
+        | '/totem'
       views:
         | never
       pathParamNames:
