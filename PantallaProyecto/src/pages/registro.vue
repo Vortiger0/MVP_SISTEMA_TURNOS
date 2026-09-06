@@ -5,77 +5,64 @@ meta:
 
 <template>
   <q-page class="bg-grey-2 flex flex-center q-pa-md">
-    <q-card class="shadow-3 q-pa-md" style="width: 100%; max-width: 450px;">
+    <q-card class="shadow-3 q-pa-md" style="width: 100%; max-width: 400px;">
       <q-card-section class="text-center">
-        <q-icon name="person_add" color="primary" size="4rem" />
-        <div class="text-h5 text-weight-bold text-grey-9 q-mt-sm">
-          Registro de Ciudadano
-        </div>
-        <div class="text-caption text-grey-7">
-          Crea tu cuenta para solicitar tus turnos
+        <div class="text-h6 text-weight-bold text-grey-9">
+          Registro
         </div>
       </q-card-section>
 
       <q-card-section class="q-gutter-y-md">
         <q-input
           v-model="nombre"
-          label="Nombre completo"
+          label="Nombre y apellido"
           outlined
           dense
-        >
-          <template #prepend>
-            <q-icon name="badge" />
-          </template>
-        </q-input>
-
-
+        />
 
         <q-input
-          v-model="email"
-          label="Correo Electrónico"
+          v-model="correo"
+          label="Correo"
+          type="email"
           outlined
           dense
-          type="email"
-        >
-          <template #prepend>
-            <q-icon name="email" />
-          </template>
-        </q-input>
+        />
 
         <q-input
           v-model="password"
-          label="Contraseña"
+          label="Ingresar contraseña"
+          type="password"
           outlined
           dense
+        />
+
+        <q-input
+          v-model="repeatPassword"
+          label="Repetir contraseña"
           type="password"
-        >
-          <template #prepend>
-            <q-icon name="lock" />
-          </template>
-        </q-input>
+          outlined
+          dense
+        />
 
         <q-btn
-          label="Crear Cuenta"
+          label="Crearse cuenta"
           color="primary"
           unelevated
           class="full-width q-py-sm"
-          to="/"
+          to="/login"
         />
       </q-card-section>
 
       <q-card-section class="text-center q-pt-none">
-        <div class="text-body2 text-grey-8">
-          ¿Ya tienes cuenta?
-          <q-btn
-            flat
-            dense
-            no-caps
-            label="Inicia Sesión"
-            color="primary"
-            class="text-weight-bold"
-            to="/login"
-          />
-        </div>
+        <q-btn
+          flat
+          dense
+          no-caps
+          label="(¿Ya tienes una cuenta? Inicia aquí)"
+          color="primary"
+          class="text-caption"
+          to="/login"
+        />
       </q-card-section>
     </q-card>
   </q-page>
@@ -85,7 +72,7 @@ meta:
 import { ref } from 'vue'
 
 const nombre = ref('')
-const documento = ref('')
-const email = ref('')
+const correo = ref('')
 const password = ref('')
+const repeatPassword = ref('')
 </script>
