@@ -52,6 +52,44 @@ declare module 'vue-router/auto-routes' {
       { path: ParamValue<false> },
       | never
     >,
+    '/admin': RouteRecordInfo<
+      '/admin',
+      '/admin',
+      Record<never, never>,
+      Record<never, never>,
+      | '/admin/'
+      | '/admin/datos-local'
+      | '/admin/datosFuncionario'
+      | '/admin/horarios'
+    >,
+    '/admin/': RouteRecordInfo<
+      '/admin/',
+      '/admin',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/admin/datos-local': RouteRecordInfo<
+      '/admin/datos-local',
+      '/admin/datos-local',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/admin/datosFuncionario': RouteRecordInfo<
+      '/admin/datosFuncionario',
+      '/admin/datosFuncionario',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/admin/horarios': RouteRecordInfo<
+      '/admin/horarios',
+      '/admin/horarios',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/funcionario': RouteRecordInfo<
       '/funcionario',
       '/funcionario',
@@ -138,6 +176,50 @@ declare module 'vue-router/auto-routes' {
         | never
       pathParamNames:
         | 'path'
+    }
+    'src/pages/admin.vue': {
+      routes:
+        | '/admin'
+        | '/admin/'
+        | '/admin/datos-local'
+        | '/admin/datosFuncionario'
+        | '/admin/horarios'
+      views:
+        | 'default'
+      pathParamNames:
+        | never
+    }
+    'src/pages/admin/index.vue': {
+      routes:
+        | '/admin/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/admin/datos-local.vue': {
+      routes:
+        | '/admin/datos-local'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/admin/datosFuncionario.vue': {
+      routes:
+        | '/admin/datosFuncionario'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/admin/horarios.vue': {
+      routes:
+        | '/admin/horarios'
+      views:
+        | never
+      pathParamNames:
+        | never
     }
     'src/pages/funcionario.vue': {
       routes:
