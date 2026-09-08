@@ -44,7 +44,7 @@ meta:
 
         <!-- PIE DE PÁGINA -->
         <q-card-section class="q-pt-xs">
-          <div class="text-caption text-red-5 italic">
+          <div class="text-caption text-red-6 italic">
             Anote el número que se le dará luego de pulsar el botón
           </div>
         </q-card-section>
@@ -71,7 +71,7 @@ meta:
 
         <!-- AVISOS Y REGRESO AUTOMÁTICO -->
         <q-card-section class="q-pt-none">
-          <div class="text-caption text-grey-8 q-mb-md">
+          <div class="text-caption text-red-6 q-mb-md">
             Conservá tu número, se te llamará cuando corresponda
           </div>
 
