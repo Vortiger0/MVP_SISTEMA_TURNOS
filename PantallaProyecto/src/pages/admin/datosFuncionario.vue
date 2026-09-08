@@ -19,6 +19,7 @@
                 <q-item v-for="funcionario in funcionarios" :key="funcionario.usuario">
                     <q-item-section>
                         <q-item-label>{{ funcionario.nombre }}</q-item-label>
+                        <q-item-label>{{ funcionario.contra }}</q-item-label>
                         <q-item-label caption>{{ funcionario.usuario }} - caja {{ funcionario.caja }}</q-item-label>
                     </q-item-section>
                      <!-- Botones de edición y eliminación -->
@@ -42,7 +43,7 @@
             <q-card-section class="q-gutter-y-sm">
             <q-input v-model="nuevoNombre" label="Nombre y apellido" />
             <q-input v-model="nuevoUsuario" label="Usuario de acceso" />
-
+            <q-input v-model="nuevaContra" label="Contraseña" type="password" />
             <!-- Selector de caja con opciones fijas 1,2,3,4 -->
             <q-select v-model="nuevaCaja" :options="opcionesCajas" label="Caja asignada" />
             </q-card-section>
@@ -73,6 +74,7 @@ const mostrarDialogo = ref(false)
 const nuevoNombre = ref('')
 const nuevoUsuario = ref('')
 const nuevaCaja = ref(null)
+const nuevaContra = ref('')
 
 // para agregar un nuevo funcionario al array
 const agregarFuncionario = () => {
@@ -81,6 +83,7 @@ const agregarFuncionario = () => {
         funcionarioEditando.value.nombre = nuevoNombre.value
         funcionarioEditando.value.usuario = nuevoUsuario.value
         funcionarioEditando.value.caja = nuevaCaja.value
+        funcionarioEditando.value.contra = nuevaContra.value
 
         
     } else {
@@ -88,12 +91,14 @@ const agregarFuncionario = () => {
         funcionarios.value.push({
             nombre: nuevoNombre.value,
             usuario: nuevoUsuario.value,
-            caja: nuevaCaja.value
+            caja: nuevaCaja.value,
+            contra: nuevaContra.value
         })
         // Limpiamos el formulario y cerramos el diálogo
         nuevoNombre.value = ''
         nuevoUsuario.value = ''
         nuevaCaja.value = null
+        nuevaContra.value = ''
         mostrarDialogo.value = false
         funcionarioEditando.value = null
         return
@@ -104,6 +109,7 @@ const agregarFuncionario = () => {
   nuevoNombre.value = ''
   nuevoUsuario.value = ''
   nuevaCaja.value = null
+  nuevaContra.value = ''
 
   // Cerramos el diálogo
   mostrarDialogo.value = false
@@ -126,6 +132,7 @@ const abrirEdicion = (funcionario) => {
   funcionarioEditando.value = funcionario 
   nuevoNombre.value = funcionario.nombre
   nuevoUsuario.value = funcionario.usuario
+  nuevaContra.value = funcionario.contra
   nuevaCaja.value = funcionario.caja
   mostrarDialogo.value = true
 }
