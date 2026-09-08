@@ -6,18 +6,6 @@ meta:
 <template>
   <q-page class="bg-grey-2 flex flex-center q-pa-md relative-position">
     
-    <!-- BOTÓN NAVEGACIÓN RÁPIDA -->
-    <div class="absolute-top-right q-pa-md" style="z-index: 10;">
-      <q-btn
-        outline
-        color="secondary"
-        icon="person"
-        label="Modo Ciudadano"
-        size="sm"
-        to="/"
-      />
-    </div>
-
     <div style="width: 100%; max-width: 500px;">
       <q-card class="shadow-3 q-pa-md">
         
