@@ -44,7 +44,7 @@ import { ref, computed } from 'vue'
 
 // Datos simulados del panel (más adelante vendrían del backend real)
 const turnosHoy = ref(38)
-const numeroActual = ref(24)
+const numeroActual = ref(45)
 const estadoLocal = ref('Abierto')
 
 // El color del texto cambia según el estado, para que se note

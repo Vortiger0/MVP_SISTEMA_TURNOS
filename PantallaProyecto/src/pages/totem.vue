@@ -44,7 +44,7 @@ meta:
 
         <!-- PIE DE PÁGINA -->
         <q-card-section class="q-pt-xs">
-          <div class="text-caption text-grey-7 italic">
+          <div class="text-caption text-red-5 italic">
             Anote el número que se le dará luego de pulsar el botón
           </div>
         </q-card-section>
