@@ -14,12 +14,12 @@ meta:
           <div class="text-subtitle1 text-weight-bold text-grey-9">
             Panel de Atención
           </div>
-          <q-btn flat round dense color="grey-7" icon="logout" to="/login">
+          <q-btn flat round dense color="grey-7" icon="logout" @click="mostrarConfirmacion = true">
             <q-tooltip>Cerrar sesión</q-tooltip>
           </q-btn>
         </q-card-section>
 
-        <!-- CAJA ASIGNADA AUTOMÁTICAMENTE -->
+        <!-- CAJA ASIGNADA AUTOMÁTICAMENTE (SOLO NÚMERO DE CAJA) -->
         <q-card-section class="q-pt-sm text-center">
           <div class="text-caption text-grey-7">Atendiendo en:</div>
           <div class="text-h6 text-primary text-weight-bold row items-center justify-center q-gutter-x-xs">
@@ -96,15 +96,38 @@ meta:
       </q-card>
     </div>
 
+    <!-- DIÁLOGO DE CONFIRMACIÓN DE CERRAR SESIÓN -->
+    <q-dialog v-model="mostrarConfirmacion" persistent>
+      <q-card style="min-width: 300px;">
+        <q-card-section class="row items-center">
+          <q-avatar icon="logout" color="primary" text-color="white" size="md" />
+          <span class="q-ml-sm text-subtitle1 text-weight-bold">Confirmar salida</span>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none text-grey-8">
+          ¿Estás seguro de que deseas cerrar sesión y salir del panel de atención?
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="grey-8" v-close-popup />
+          <q-btn label="Cerrar sesión" color="negative" unelevated @click="cerrarSesion" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </q-page>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const mostrarConfirmacion = ref(false)
 
 const cajaAsignada = ref({
   id: 1,
-  label: 'Caja 1 - Cobranzas',
+  label: 'Caja 1',
   numeroAtendido: 1,
   ultimoFila: 8
 })
@@ -119,6 +142,11 @@ const marcarAusente = () => {
   if (cajaAsignada.value.numeroAtendido < cajaAsignada.value.ultimoFila) {
     atenderSiguiente()
   }
+}
+
+const cerrarSesion = () => {
+  mostrarConfirmacion.value = false
+  router.push('/login')
 }
 </script>
 
