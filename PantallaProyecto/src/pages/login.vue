@@ -7,18 +7,17 @@ meta:
   <q-page class="bg-grey-2 flex flex-center q-pa-md">
     <q-card class="shadow-3 q-pa-md" style="width: 100%; max-width: 420px;">
       
-      <!-- SWITCH / TOGGLE DE MODO -->
-      <q-card-section class="row items-center justify-between q-pb-none">
-        <span class="text-caption text-weight-bold text-grey-7">
-          MODO DE ACCESO:
-        </span>
-        <q-toggle
-          v-model="esFuncionario"
-          :label="esFuncionario ? 'Funcionario' : 'Ciudadano'"
-          color="primary"
-          keep-color
-        />
-      </q-card-section>
+<!-- Botón de modo de acceso Funcionario/Ciudadano -->
+<div class="column items-end q-mb-md">
+  <div class="text-caption text-bold text-grey-7 text-uppercase">
+    Modo de acceso:
+  </div>
+  <q-toggle
+    v-model="esFuncionario"
+    :label="esFuncionario ? 'Ciudadano' : 'Funcionario'"
+    color="primary"
+  />
+</div>
 
       <!-- CABECERA ADAPTATIVA -->
       <q-card-section class="text-center q-pt-xs">
