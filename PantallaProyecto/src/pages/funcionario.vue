@@ -19,7 +19,7 @@ meta:
           </q-btn>
         </q-card-section>
 
-        <!-- CAJA ASIGNADA AUTOMÁTICAMENTE (SOLO NÚMERO DE CAJA) -->
+        <!-- CAJA ASIGNADA AUTOMÁTICAMENTE (PARA QUE SOLO MUESTRE NÚMERO CAJA) -->
         <q-card-section class="q-pt-sm text-center">
           <div class="text-caption text-grey-7">Atendiendo en:</div>
           <div class="text-h6 text-primary text-weight-bold row items-center justify-center q-gutter-x-xs">
