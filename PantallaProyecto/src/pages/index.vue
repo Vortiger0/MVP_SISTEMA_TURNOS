@@ -32,6 +32,7 @@ meta:
           >
             <q-card
               class="cursor-pointer card-hover shadow-2 text-center q-pa-sm"
+              :style="{ 'border-left': `6px solid ${colorEstadoHex(sede.estado)}` }"
               @click="seleccionarSede(sede)"
             >
               <q-card-section class="q-py-md">
@@ -154,7 +155,6 @@ const sedes = ref([
   { id: 4, nombre: 'Redpagos Terminal', estado: 'Desocupado', turnos: 8, direccion: 'Tres Cruces Nivel 2', horarios: '07:00 - 22:00', telefono: '2903 4444', redes: '@redpagos_terminal' }
 ])
 
-
 const sedesFiltradas = computed(() => {
   if (!busqueda.value) return sedes.value
   return sedes.value.filter(s => 
@@ -167,13 +167,25 @@ const seleccionarSede = (sede) => {
   pantalla.value = 'detalle'
 }
 
+// Color para los íconos de Quasar
 const colorEstado = (estado) => {
   switch (estado) {
-    case 'Alta ocupacion': return 'red'
+    case 'Alta ocupacion': return 'negative'
     case 'Media ocupacion': return 'warning'
-    case 'Baja ocupacion': return 'green'
-    case 'Desocupado': return 'blue'
+    case 'Baja ocupacion': return 'positive'
+    case 'Desocupado': return 'info'
     default: return 'grey'
+  }
+}
+
+// Color para el borde izquierdo en las tarjetas
+const colorEstadoHex = (estado) => {
+  switch (estado) {
+    case 'Alta ocupacion': return '#c10015'    // Rojo la ocupacion alta
+    case 'Media ocupacion': return '#f2c037'   // Amarillo la media
+    case 'Baja ocupacion': return '#21ba45'    // Verde la baja
+    case 'Desocupado': return '#31c6e8'        // Azul desocupado
+    default: return '#9e9e9e'
   }
 }
 </script>
