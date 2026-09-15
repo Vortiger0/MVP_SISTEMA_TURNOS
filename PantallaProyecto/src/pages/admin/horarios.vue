@@ -46,31 +46,43 @@
 
         <q-separator />
 
-        <!-- Indicador de ocupación -->
+        <!-- Indicador de concurrencia -->
         <q-card-section>
-          <div class="text-subtitle1 text-weight-bold q-mb-sm">Indicador de ocupación</div>
+          <div class="text-subtitle1 text-weight-bold q-mb-sm">Indicador de concurrencia</div>
 
           <div class="row items-center q-gutter-x-sm q-mb-xs">
-            <div style="width: 140px;">Poco ocupado:</div>
+            <div style="width: 140px;">Poco concurrido:</div>
             <span>Hasta</span>
-            <q-input v-model.number="umbralPocoOcupado" type="number" dense outlined style="width: 90px;" />
+            <q-input v-model.number="umbralPocoConcurrido" type="number" dense outlined style="width: 90px;" min="0" 
+            max="9999"
+            :rules="[
+              val => val >= 0 || 'No puede ser menor a 0',
+              val => val <= 9999 || 'El valor es demasiado alto'
+            ]" 
+                      />
             <span>personas</span>
           </div>
 
           <div class="row items-center q-gutter-x-sm q-mb-xs">
-            <div style="width: 140px;">Ocupado:</div>
+            <div style="width: 140px;">Concurrido:</div>
             <span>Hasta</span>
-            <q-input v-model.number="umbralOcupado" type="number" dense outlined style="width: 90px;" />
+            <q-input v-model.number="umbralConcurrido" type="number" dense outlined style="width: 90px;" min="0" 
+            max="9999"
+            :rules="[
+              val => val >= 0 || 'No puede ser menor a 0',
+              val => val <= 9999 || 'El valor es demasiado alto'
+            ]" 
+            />
             <span>personas</span>
           </div>
 
           <div class="text-caption text-grey-7">
-            Muy ocupado: más de {{ umbralOcupado }} (valor automático)
+            Muy concurrido: más de {{ umbralConcurrido }} (valor automático)
           </div>
 
-          <!-- Mensaje de error si Ocupado <= Poco ocupado -->
-          <div v-if="umbralOcupado <= umbralPocoOcupado" class="text-caption text-negative q-mt-xs">
-            "Ocupado" debe ser mayor que "Poco ocupado"
+          <!-- Mensaje de error si Concurrido <= Poco concurrido -->
+          <div v-if="umbralConcurrido <= umbralPocoConcurrido" class="text-caption text-negative q-mt-xs">
+            "Concurrido" debe ser mayor que "Poco concurrido"
           </div>
         </q-card-section>
 
@@ -86,12 +98,18 @@
               dense
               outlined
               style="width: 100px;"
+              min = "0"
+              max = "9999"
+              :rules="[
+                val => val >= 0 || 'No puede ser menor a 0',
+                val => val <= 9999 || 'El valor es demasiado alto'
+              ]"
             />
             <span>turnos</span>
           </div>
         </q-card-section>
 
-        <!-- Cantidad de cajas -->
+        
         <!-- Cantidad de cajas -->
         <q-card-section>
           <div class="text-subtitle1 text-weight-bold q-mb-sm">Cantidad de cajas en la sucursal</div>
@@ -101,6 +119,11 @@
             dense
             outlined
             style="max-width: 150px;"
+            min="1"
+            :rules="[
+              val => val >= 1 || 'No puede ser menor a 1',
+              val => val <= 9999 || 'El valor es demasiado alto'
+            ]"
           />
         </q-card-section>
 
@@ -147,9 +170,9 @@ const horarios = ref([
 
 const margenCorte = ref(15) // margen de corte en minutos, para el turno actual
 
-// Umbrales de ocupación
-const umbralPocoOcupado = ref(10)
-const umbralOcupado = ref(20)
+// Umbrales de concurrencia
+const umbralPocoConcurrido = ref(10)
+const umbralConcurrido = ref(20)
 
 //tope de emisión diaria de turnos, para que no se emitan más de cierta cantidad por día
 const topeEmisionDiaria = ref(100)

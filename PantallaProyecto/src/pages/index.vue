@@ -148,10 +148,10 @@ const sedeSeleccionada = ref(null)
 const confirmarLogout = ref(false)
 
 const sedes = ref([
-  { id: 1, nombre: 'Abitab', estado: 'Media concurrencia', turnos: 18, direccion: 'Av. 18 de Julio 1234', horarios: '09:00 - 18:00', telefono: '2900 0000', redes: '@abitab_oficial' },
-  { id: 2, nombre: 'Abitab centro', estado: 'Alta concurrencia', turnos: 30, direccion: 'Plaza Independencia 567', horarios: '08:30 - 19:00', telefono: '2901 1111', redes: '@abitab_centro' },
-  { id: 3, nombre: 'Abitab Dorado', estado: 'Baja concurrencia', turnos: 13, direccion: 'Av. Rivera 2420', horarios: '09:00 - 19:00', telefono: '2902 3333', redes: '@abitab_dorado' },
-  { id: 4, nombre: 'Redpagos Terminal', estado: 'Muy baja concurrencia', turnos: 8, direccion: 'Tres Cruces Nivel 2', horarios: '07:00 - 22:00', telefono: '2903 4444', redes: '@redpagos_terminal' }
+  { id: 1, nombre: 'Abitab', estado: 'Concurrido', turnos: 18, direccion: 'Av. 18 de Julio 1234', horarios: '09:00 - 18:00', telefono: '2900 0000', redes: '@abitab_oficial' },
+  { id: 2, nombre: 'Abitab centro', estado: 'Muy concurrido', turnos: 30, direccion: 'Plaza Independencia 567', horarios: '08:30 - 19:00', telefono: '2901 1111', redes: '@abitab_centro' },
+  { id: 3, nombre: 'Abitab Dorado', estado: 'Poco concurrido', turnos: 13, direccion: 'Av. Rivera 2420', horarios: '09:00 - 19:00', telefono: '2902 3333', redes: '@abitab_dorado' },
+  { id: 4, nombre: 'Redpagos Terminal', estado: 'Poco concurrido', turnos: 8, direccion: 'Tres Cruces Nivel 2', horarios: '07:00 - 22:00', telefono: '2903 4444', redes: '@redpagos_terminal' }
 ])
 
 const sedesFiltradas = computed(() => {
@@ -169,10 +169,9 @@ const seleccionarSede = (sede) => {
 // Color para los niveles de ocupación.
 const colorEstado = (estado) => {
   switch (estado) {
-    case 'Alta concurrencia': return 'negative'
-    case 'Media concurrencia': return 'warning'
-    case 'Baja concurrencia': return 'positive'
-    case 'Muy baja concurrencia': return 'info'
+    case 'Poco concurrido': return 'positive'
+    case 'Concurrido': return 'warning'
+    case 'Muy concurrido': return 'negative'
     default: return 'grey'
   }
 }
@@ -180,10 +179,9 @@ const colorEstado = (estado) => {
 // Color para el borde izquierdo en las tarjetas
 const colorEstadoHex = (estado) => {
   switch (estado) {
-    case 'Alta concurrencia': return '#c10015'    // Rojo la ocupacion alta
-    case 'Media concurrencia': return '#f2c037'   // Amarillo la media
-    case 'Baja concurrencia': return '#21ba45'    // Verde la baja
-    case 'Muy baja concurrencia': return '#31c6e8'        // Azul desocupado
+    case 'Poco concurrido': return '#21ba45'    // Verde la baja
+    case 'Concurrido': return '#f2c037'   // Amarillo la media
+    case 'Muy concurrido': return '#c10015'    // Rojo la ocupacion alta
     default: return '#9e9e9e'
   }
 }
