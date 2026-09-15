@@ -16,9 +16,16 @@ meta:
             icon="confirmation_number"
             label="Mis turnos"
             unelevated
-            @click="dialogoMisTurnos = true"
+            to="/misturnos"
           />
-          <q-btn flat round dense color="grey-7" icon="logout" to="/login">
+          <q-btn
+            flat
+            round
+            dense
+            color="grey-7"
+            icon="logout"
+            @click="confirmarLogout = true"
+          >
             <q-tooltip>Cerrar sesión</q-tooltip>
           </q-btn>
         </div>
@@ -110,28 +117,22 @@ meta:
 
     </div>
 
-    <!-- VENTANA EMERGENTE: MIS TURNOS -->
-    <q-dialog v-model="dialogoMisTurnos">
-      <q-card style="width: 100%; max-width: 350px;">
-        <q-card-section class="row items-center justify-between">
-          <div class="text-h6 text-weight-bold">Mis Turnos</div>
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-        <q-separator />
-        <q-card-section class="text-center q-py-lg">
-          <div v-if="turnoActivo">
-            <div class="text-caption text-grey-7">Sede: {{ turnoActivo.sede }}</div>
-            <div class="text-h2 text-weight-bolder text-primary q-my-xs">
-              #{{ turnoActivo.numero }}
-            </div>
-            <div class="text-caption text-grey-8">
-              Estado: Esperando llamadas en caja
-            </div>
+    <!-- DIÁLOGO DE CONFIRMACIÓN DE LOGOUT -->
+    <q-dialog v-model="confirmarLogout">
+      <q-card class="text-center q-pa-sm" style="max-width: 320px;">
+        <q-card-section>
+          <div class="text-subtitle1 text-weight-bold text-grey-9">
+            ¿Seguro que quiere salir?
           </div>
-          <div v-else class="text-grey-7">
-            No tienes turnos activos asociados a tu usuario.
+          <div class="text-caption text-grey-7 q-mt-xs">
+            Se cerrará tu sesión actual.
           </div>
         </q-card-section>
+
+        <q-card-actions align="around">
+          <q-btn flat label="Cancelar" color="grey-8" v-close-popup />
+          <q-btn label="Salir" color="negative" unelevated to="/login" />
+        </q-card-actions>
       </q-card>
     </q-dialog>
 
@@ -143,10 +144,8 @@ import { ref, computed } from 'vue'
 
 const pantalla = ref('catalogo')
 const busqueda = ref('')
-const dialogoMisTurnos = ref(false)
 const sedeSeleccionada = ref(null)
-
-const turnoActivo = ref(null)
+const confirmarLogout = ref(false)
 
 const sedes = ref([
   { id: 1, nombre: 'Abitab', estado: 'Media concurrencia', turnos: 18, direccion: 'Av. 18 de Julio 1234', horarios: '09:00 - 18:00', telefono: '2900 0000', redes: '@abitab_oficial' },
